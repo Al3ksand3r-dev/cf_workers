@@ -22,10 +22,12 @@ export default {
   },
 
   async createOne(req) {
-    const resp = JSON.stringify(await DnsFunction.createOne(req))
-    return new Response(resp, {
-      headers: resHeaders,
-    })
+    const result = JSON.stringify(await DnsFunction.createOne(req))
+    if(JSON.parse(result).success) {
+      return new Response(result, {headers: resHeaders})
+    } else {
+      return new Response("DNS record is invalid", {headers: resHeaders, status: 400})
+    }
   },
 
   async deleteOne(req) {
